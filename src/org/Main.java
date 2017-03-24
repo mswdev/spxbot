@@ -45,6 +45,7 @@ public class Main {
     public static void main(String[] args) {
         final ConfigReader CONFIG_READER = new ConfigReader(JAVA_CONFIG_URL);
         final Map<String, String> CONFIG_PARAMETERS = CONFIG_READER.parseConfig();
+        System.out.println(CONFIG_PARAMETERS.toString());
 
         final String JAR_LOCATION = CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar");
         try {
