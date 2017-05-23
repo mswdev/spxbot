@@ -7,25 +7,26 @@ import java.io.File;
  */
 public enum DirectoryFolder {
 
-    SPXBot("SPXBot", null),
-    DATA("data", SPXBot, DirectoryFile.GAMEPACK);
+    SPXBot("SPXBot", System.getProperty("user.home"), null),
+    DATA("data", SPXBot.getDirectoryPath() + File.separator + SPXBot.getFolderName(), DirectoryFile.GAMEPACK),
+    SETTINGS("settings", SPXBot.getDirectoryPath() + File.separator + SPXBot.getFolderName(), DirectoryFile.CLIENT_BUILD, DirectoryFile.BOBBY);
 
     private final String FOLDER_NAME;
-    private final DirectoryFolder PARENT_DIRECTORY;
+    private final String PATH;
     private final DirectoryFile[] DIRECTORY_FILES;
 
-    DirectoryFolder(String folder_name, DirectoryFolder parent_directory, DirectoryFile... directory_files) {
+    DirectoryFolder(String folder_name, String path, DirectoryFile... directory_files) {
         this.FOLDER_NAME = folder_name;
-        this.PARENT_DIRECTORY = parent_directory;
+        this.PATH = path;
         this.DIRECTORY_FILES = directory_files;
     }
 
     public String getFolderName() {
-        return this.FOLDER_NAME;
+        return FOLDER_NAME;
     }
 
-    public DirectoryFolder getParentDirectory() {
-        return this.PARENT_DIRECTORY;
+    public String getDirectoryPath() {
+        return PATH;
     }
 
     public DirectoryFile[] getDirectoryFiles() {
