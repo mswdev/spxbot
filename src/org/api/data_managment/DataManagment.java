@@ -2,7 +2,7 @@ package org.api.data_managment;
 
 import org.data.enums.DirectoryFile;
 import org.data.enums.DirectoryFolder;
-import org.filemanagment.FileManagment;
+import org.directory_managment.FileManagment;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,7 +27,7 @@ public class DataManagment {
                     if (!directory_file.shouldCreateFile())
                         continue;
 
-                    final File FILE = FileManagment.getFileInDirectory(directory_folder.getDirectoryPath() + File.separator + directory_folder.getFolderName(), directory_file.getFileName() + directory_file.getFileExtension());
+                    final File FILE = FileManagment.getFileInDirectory(directory_folder.getDirectoryPath() + File.separator + directory_folder.getFolderName(), directory_file.getFileName(), directory_file.getFileExtension());
                     if (FILE == null)
                         continue;
 

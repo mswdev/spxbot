@@ -4,7 +4,7 @@ import org.ConfigReader;
 import org.data.Vars;
 import org.data.enums.DirectoryFile;
 import org.data.enums.DirectoryFolder;
-import org.filemanagment.FileManagment;
+import org.directory_managment.FileManagment;
 import org.util.Logging;
 import org.web.Request;
 
@@ -38,7 +38,7 @@ public class DirectoryManagment {
         for (DirectoryFolder directory_folder : DIRECTORY_FOLDERS) {
             final String DIRECTORY_PATH = directory_folder.getDirectoryPath();
 
-            final File FILE = FileManagment.getFileInDirectory(DIRECTORY_PATH, directory_folder.getFolderName());
+            final File FILE = FileManagment.getDirectoryInDirectory(DIRECTORY_PATH, directory_folder.getFolderName());
             if (FILE != null) {
                 created_directories++;
                 continue;
@@ -74,7 +74,7 @@ public class DirectoryManagment {
                     continue;
                 }
 
-                final File FILE = FileManagment.getFileInDirectory(directory_folder.getDirectoryPath() + File.separator + directory_folder.getFolderName(), directory_file.getFileName() + directory_file.getFileExtension());
+                final File FILE = FileManagment.getFileInDirectory(directory_folder.getDirectoryPath() + File.separator + directory_folder.getFolderName(), directory_file.getFileName(), directory_file.getFileExtension());
                 if (FILE != null) {
                     created_files++;
                     continue;
@@ -107,11 +107,11 @@ public class DirectoryManagment {
         final int GAMEPACK_SIZE = Request.requestFileSize(CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"));
 
         final String GAMEPACK_PATH = DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName();
-        final File CURRENT_GAMEPACK = FileManagment.getFileInDirectory(GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName() + DirectoryFile.GAMEPACK.getFileExtension());
+        final File CURRENT_GAMEPACK = FileManagment.getFileInDirectory(GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension());
         if (CURRENT_GAMEPACK != null && CURRENT_GAMEPACK.length() == GAMEPACK_SIZE)
             return true;
 
-        if (Request.requestFile(CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"), GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName() + DirectoryFile.GAMEPACK.getFileExtension())) {
+        if (Request.requestFile(CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"), GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension(), true)) {
             return true;
         } else {
             Logging.error("Unable to download the RuneScape gamepack.jar from the URL: " + CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"));
