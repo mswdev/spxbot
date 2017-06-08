@@ -1,7 +1,7 @@
 package org;
 
 import org.api.DirectoryManagment;
-import org.api.data_managment.DataManagment;
+import org.api.GamepackManagment;
 import org.data.Vars;
 import org.data.enums.DirectoryFile;
 import org.data.enums.DirectoryFolder;
@@ -31,10 +31,18 @@ public class Main {
             Logging.debug("Successfully created all directory folders.");
         if (DirectoryManagment.createDirectoryFiles())
             Logging.debug("Successfully created all directory files.");
-        if (DataManagment.createFileProperties())
+        if (DirectoryManagment.createFileProperties())
             Logging.debug("Successfully created file properties.");
-        /*if (DirectoryManagment.requestGamepack())
-            Logging.debug("Successfully acquired the gamepack.");
+
+        /*if (GamepackManagment.needsGamepack()) {
+            Logging.debug("Our gamepack needs to be updated.");
+            if (GamepackManagment.requestGamepack())
+                Logging.debug("Successfully acquired the gamepack.");
+        } else {
+            Logging.debug("We do not need to update our gamepack.");
+        }
+
+        System.out.println(GamepackManagment.getLocalGamepackRevision());
 
         final ConfigReader CONFIG_READER = new ConfigReader(Vars.get().JAVA_CONFIG_URL);
         final Map<String, String> CONFIG_PARAMETERS = CONFIG_READER.parseConfig();

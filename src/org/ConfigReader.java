@@ -69,7 +69,7 @@ public class ConfigReader {
                     config_lines.add(config_line);
 
                 buffered_reader.close();
-                return config_lines.stream().toArray(String[]::new);
+                return config_lines.toArray(new String[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }

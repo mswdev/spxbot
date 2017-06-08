@@ -1,15 +1,13 @@
 package org.api;
 
-import org.ConfigReader;
-import org.data.Vars;
 import org.data.enums.DirectoryFile;
 import org.data.enums.DirectoryFolder;
 import org.directory_managment.FileManagment;
+import org.directory_managment.PropertyManagment;
 import org.util.Logging;
-import org.web.Request;
 
 import java.io.File;
-import java.util.Map;
+import java.io.FileOutputStream;
 
 /**
  * Created by Sphiinx on 3/24/17.
@@ -57,7 +55,6 @@ public class DirectoryManagment {
 
     /**
      * Creates the directory files in the current directory that is being created.
-     *
      */
     public static boolean createDirectoryFiles() {
         final DirectoryFolder[] DIRECTORY_FOLDERS = DirectoryFolder.values();
@@ -74,7 +71,7 @@ public class DirectoryManagment {
                     continue;
                 }
 
-                final File FILE = FileManagment.getFileInDirectory(directory_folder.getDirectoryPath() + File.separator + directory_folder.getFolderName(), directory_file.getFileName(), directory_file.getFileExtension());
+                final File FILE = FileManagment.getFileInDirectory(directory_folder.getDirectoryPath() + File.separator + directory_folder.getFolderName(), directory_file.getFileName(),  directory_file.getFileExtension());
                 if (FILE != null) {
                     created_files++;
                     continue;
@@ -94,30 +91,46 @@ public class DirectoryManagment {
     }
 
     /**
-     * Requests the RuneScape gamepack from the config url. If the RuneScape gamepack was previously incorrectly acquired, it will re-aquire it.
-     * If it fails to request the RuneScape gamepack, it will throw an error message showing the failed url and creation path.
-     * <p>
-     * TODO Update the gamepack if it's out of date, or check if it automatically updates if it's out of date.
+     * Creates the file properties for each file from the DirectoryFile enum.
      *
-     * @return True if the RuneScape gamepack was successfully acquired; false otherwise.
-     */
-    public static boolean requestGamepack() {
-        final ConfigReader CONFIG_READER = new ConfigReader(Vars.get().JAVA_CONFIG_URL);
-        final Map<String, String> CONFIG_PARAMETERS = CONFIG_READER.parseConfig();
-        final int GAMEPACK_SIZE = Request.requestFileSize(CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"));
+     * @return True if the file properties were successfully created; false otherwise.
+     * */
+    public static boolean createFileProperties() {
+        try {
+            final DirectoryFolder[] DIRECTORY_FOLDERS = DirectoryFolder.values();
+            for (DirectoryFolder directory_folder : DIRECTORY_FOLDERS) {
+                if (directory_folder.getDirectoryFiles() == null)
+                    continue;
 
-        final String GAMEPACK_PATH = DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName();
-        final File CURRENT_GAMEPACK = FileManagment.getFileInDirectory(GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension());
-        if (CURRENT_GAMEPACK != null && CURRENT_GAMEPACK.length() == GAMEPACK_SIZE)
-            return true;
+                final DirectoryFile[] DIRECTORY_FILES = DirectoryFile.values();
+                for (DirectoryFile directory_file : DIRECTORY_FILES) {
+                    if (!directory_file.shouldCreateFile())
+                        continue;
 
-        if (Request.requestFile(CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"), GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension(), true)) {
+                    final File FILE = FileManagment.getFileInDirectory(directory_folder.getDirectoryPath() + File.separator + directory_folder.getFolderName(), directory_file.getFileName(), directory_file.getFileExtension());
+                    if (FILE == null)
+                        continue;
+
+                    if (!PropertyManagment.loadProperties(directory_folder.getDirectoryPath() + File.separator + directory_folder.getFolderName(), File.separator + directory_file.getFileName(), directory_file.getFileExtension()))
+                        return false;
+
+                    for (String property : directory_file.getProperties()) {
+                        if (PropertyManagment.getFileProperties().getProperty(property) != null)
+                            continue;
+
+                        PropertyManagment.getFileProperties().put(property, "");
+                    }
+
+                    PropertyManagment.getFileProperties().store(new FileOutputStream(FILE), "settings");
+                    PropertyManagment.getFileProperties().clear();
+                }
+            }
             return true;
-        } else {
-            Logging.error("Unable to download the RuneScape gamepack.jar from the URL: " + CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"));
-            Logging.error("Failed creation path: " + System.getProperty("user.home") + GAMEPACK_PATH);
-            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        return false;
     }
 
 }
