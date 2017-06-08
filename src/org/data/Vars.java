@@ -54,5 +54,10 @@ public class Vars {
      */
     public final String JAVA_CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
 
+    /**
+     * The last known revision, this is just a base for starting the revision tracking.
+     * */
+    public final int LAST_KNOWN_REVISION = 143;
+
 }
 

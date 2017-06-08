@@ -54,24 +54,38 @@ public class GamepackManagment {
     }
 
     /**
-     * Requests the RuneScape gamepack from the config url. If the RuneScape gamepack was previously incorrectly acquired, it will re-aquire it.
+     * Gets the locally stored RuneScape gamepack revision.
+     *
+     * @return The locally stored RuneScape gamepack revision; -1 otherwise.
+     */
+    public static int getLocalGamepackRevision() {
+        if (!PropertyManagment.loadProperties(DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName(), File.separator + DirectoryFile.CLIENT_BUILD.getFileName(), DirectoryFile.CLIENT_BUILD.getFileExtension()))
+            return -1;
+
+        if (!PropertyManagment.getFileProperties().getProperty("local_revision").isEmpty()) {
+            try {
+                return Integer.parseInt(PropertyManagment.getFileProperties().getProperty("local_revision"));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return -1;
+    }
+
+    /**
+     * Requests the RuneScape gamepack from the config url.
      * If it fails to request the RuneScape gamepack, it will throw an error message showing the failed url and creation path.
-     * <p>
-     * TODO Update the gamepack if it's out of date, or check if it automatically updates if it's out of date.
      *
      * @return True if the RuneScape gamepack was successfully acquired; false otherwise.
      */
     public static boolean requestGamepack() {
         final ConfigReader CONFIG_READER = new ConfigReader(Vars.get().JAVA_CONFIG_URL);
         final Map<String, String> CONFIG_PARAMETERS = CONFIG_READER.parseConfig();
-        final int GAMEPACK_SIZE = Request.requestFileSize(CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"));
-
         final String GAMEPACK_PATH = DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName();
-        final File CURRENT_GAMEPACK = FileManagment.getFileInDirectory(GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension());
-        if (CURRENT_GAMEPACK != null && CURRENT_GAMEPACK.length() == GAMEPACK_SIZE)
-            return true;
 
         if (Request.requestFile(CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"), GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension(), true)) {
+            putRevision();
             return true;
         } else {
             Logging.error("Unable to download the RuneScape gamepack.jar from the URL: " + CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"));
@@ -81,35 +95,36 @@ public class GamepackManagment {
     }
 
     /**
-     * Determines whether we need a new RuneScape gamepack.
+     * Determines whether we need a new RuneScape gamepack. If the RuneScape gamepack was previously incorrectly acquired, it will re-aquire it.
      *
      * @return True if we need a new RuneScape gamepack; false otherwise.
-     * */
+     */
     public static boolean needsGamepack() {
+        final ConfigReader CONFIG_READER = new ConfigReader(Vars.get().JAVA_CONFIG_URL);
+        final Map<String, String> CONFIG_PARAMETERS = CONFIG_READER.parseConfig();
+        final int GAMEPACK_SIZE = Request.requestFileSize(CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"));
+
+        final String GAMEPACK_PATH = DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName();
+        final File CURRENT_GAMEPACK = FileManagment.getFileInDirectory(GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension());
+        if (CURRENT_GAMEPACK == null)
+            return true;
+
+        if (CURRENT_GAMEPACK.length() != GAMEPACK_SIZE)
+            return true;
+
         if (getLocalGamepackRevision() == -1)
             return true;
 
         return getLocalGamepackRevision() != getNewestRevision(getLocalGamepackRevision());
     }
 
-
-    /**
-     * Gets the locally stored RuneScape gamepack revision.
-     *
-     * @return The locally stored RuneScape gamepack revision; -1 otherwise.
-     */
-    public static int getLocalGamepackRevision() {
-        if (!PropertyManagment.loadProperties(DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName(), File.separator + DirectoryFile.CLIENT_BUILD.getFileName(), DirectoryFile.CLIENT_BUILD.getFileExtension()))
-            return -1;
-
-        int local_revision = -1;
-        try {
-            local_revision = Integer.parseInt(PropertyManagment.getFileProperties().getProperty("local_revision"));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        return local_revision;
+    public static void putRevision() {
+        final String PROPERTY_NAME = "local_revision";
+        final String REVISION = Integer.toString(getNewestRevision(Vars.get().LAST_KNOWN_REVISION));
+        final String FILE_PATH = DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName();
+        final String FILE_NAME = File.separator + DirectoryFile.CLIENT_BUILD.getFileName();
+        final String FILE_EXTENSION = DirectoryFile.CLIENT_BUILD.getFileExtension();
+        PropertyManagment.putProperty(PROPERTY_NAME, REVISION, FILE_PATH, FILE_NAME, FILE_EXTENSION);
     }
 
 }

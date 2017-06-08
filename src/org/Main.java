@@ -22,7 +22,7 @@ public class Main {
      * 1. If we do not have the gamepack, download it and store the version.
      * 2. If we do have the gamepack, and we do not have the version stored || the version is stored, re-download it and store the version.
      * 3. if we do have the gamepack, and we do not have the version stored || the version is stored but is old, re-download it and store the version.
-     * */
+     */
 
 
     public static void main(String[] args) {
@@ -33,16 +33,9 @@ public class Main {
             Logging.debug("Successfully created all directory files.");
         if (DirectoryManagment.createFileProperties())
             Logging.debug("Successfully created file properties.");
-
-        /*if (GamepackManagment.needsGamepack()) {
-            Logging.debug("Our gamepack needs to be updated.");
+        if (GamepackManagment.needsGamepack())
             if (GamepackManagment.requestGamepack())
                 Logging.debug("Successfully acquired the gamepack.");
-        } else {
-            Logging.debug("We do not need to update our gamepack.");
-        }
-
-        System.out.println(GamepackManagment.getLocalGamepackRevision());
 
         final ConfigReader CONFIG_READER = new ConfigReader(Vars.get().JAVA_CONFIG_URL);
         final Map<String, String> CONFIG_PARAMETERS = CONFIG_READER.parseConfig();
@@ -65,11 +58,10 @@ public class Main {
             APPLET_PANEL.add(APPLET);
             APPLET_FRAME.pack();
             APPLET_FRAME.setVisible(true);
-            Logging.debug("Game client successfully hooked.");
+            Logging.debug("Successfully hooked the game client.");
         } catch (IllegalAccessException | ClassNotFoundException | MalformedURLException | InstantiationException e) {
             e.printStackTrace();
-        }*/
+        }
     }
-
 }
 
