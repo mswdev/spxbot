@@ -21,6 +21,16 @@ import java.util.Map;
 public class GamepackManagment {
 
     /**
+     * Parses the config parameters from the RuneScape config URL.
+     *
+     * @return A Map containing the RuneScape config parameters.
+     * */
+    public static Map<String, String> getConfigParameters() {
+        final ConfigReader CONFIG_READER = new ConfigReader(Vars.get().JAVA_CONFIG_URL);
+        return CONFIG_READER.parseConfig();
+    }
+
+    /**
      * Gets the newest revision from the gamepack on the RuneScape website.
      *
      * @param previous_revision The local client revision.
@@ -58,7 +68,7 @@ public class GamepackManagment {
      *
      * @return The locally stored RuneScape gamepack revision; -1 otherwise.
      */
-    public static int getLocalGamepackRevision() {
+    public static int getLocalRevision() {
         if (!PropertyManagment.loadProperties(DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName(), File.separator + DirectoryFile.CLIENT_BUILD.getFileName(), DirectoryFile.CLIENT_BUILD.getFileExtension()))
             return -1;
 
@@ -80,15 +90,13 @@ public class GamepackManagment {
      * @return True if the RuneScape gamepack was successfully acquired; false otherwise.
      */
     public static boolean requestGamepack() {
-        final ConfigReader CONFIG_READER = new ConfigReader(Vars.get().JAVA_CONFIG_URL);
-        final Map<String, String> CONFIG_PARAMETERS = CONFIG_READER.parseConfig();
         final String GAMEPACK_PATH = DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName();
 
-        if (Request.requestFile(CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"), GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension(), true)) {
+        if (Request.requestFile(getConfigParameters().get("codebase") + getConfigParameters().get("initial_jar"), GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension(), true)) {
             putRevision();
             return true;
         } else {
-            Logging.error("Unable to download the RuneScape gamepack.jar from the URL: " + CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"));
+            Logging.error("Unable to download the RuneScape gamepack.jar from the URL: " + getConfigParameters().get("codebase") + getConfigParameters().get("initial_jar"));
             Logging.error("Failed creation path: " + System.getProperty("user.home") + GAMEPACK_PATH);
             return false;
         }
@@ -100,9 +108,8 @@ public class GamepackManagment {
      * @return True if we need a new RuneScape gamepack; false otherwise.
      */
     public static boolean needsGamepack() {
-        final ConfigReader CONFIG_READER = new ConfigReader(Vars.get().JAVA_CONFIG_URL);
-        final Map<String, String> CONFIG_PARAMETERS = CONFIG_READER.parseConfig();
-        final int GAMEPACK_SIZE = Request.requestFileSize(CONFIG_PARAMETERS.get("codebase") + CONFIG_PARAMETERS.get("initial_jar"));
+
+        final int GAMEPACK_SIZE = Request.requestFileSize(getConfigParameters().get("codebase") + getConfigParameters().get("initial_jar"));
 
         final String GAMEPACK_PATH = DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName();
         final File CURRENT_GAMEPACK = FileManagment.getFileInDirectory(GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension());
@@ -112,12 +119,15 @@ public class GamepackManagment {
         if (CURRENT_GAMEPACK.length() != GAMEPACK_SIZE)
             return true;
 
-        if (getLocalGamepackRevision() == -1)
+        if (getLocalRevision() == -1)
             return true;
 
-        return getLocalGamepackRevision() != getNewestRevision(getLocalGamepackRevision());
+        return getLocalRevision() != getNewestRevision(getLocalRevision());
     }
 
+    /**
+     * Puts the current local revision in the client build data file.
+     * */
     public static void putRevision() {
         final String PROPERTY_NAME = "local_revision";
         final String REVISION = Integer.toString(getNewestRevision(Vars.get().LAST_KNOWN_REVISION));

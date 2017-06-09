@@ -15,15 +15,6 @@ import java.io.FileOutputStream;
 public class DirectoryManagment {
 
     /**
-     * **NEW FILE MANAGMENT**
-     *
-     * 1. Create each directory like normal
-     * 2. Then go and create each file in the directorys
-     * 3. Then go and store all the settings in each director.
-     *
-     * */
-
-    /**
      * Creates all of the directory folders in the specified locations from the DirectoryFolder enum.
      * If it fails to create a directory, it will throw an error message showing which directory failed to be created and it's creation path.
      *

@@ -8,24 +8,9 @@ public enum DirectoryFile {
     GAMEPACK("gamepack", ".jar", false),
     CLIENT_BUILD("client_build", ".dat", true, "local_revision");
 
-    /**
-     * The file name.
-     * */
     private final String FILE_NAME;
-
-    /**
-     * The file extension.
-     * */
     private final String FILE_EXTENSION;
-
-    /**
-     * True if we should create the file; false otherwise. (Note: Some files are not created such as the gamepack in which it is downloaded.
-     * */
     private final boolean SHOULD_CREATE_FILE;
-
-    /**
-     * The String array containing the properties the file should hold.
-     * */
     private final String[] PROPERTIES;
 
     DirectoryFile(String folder_name, String file_extension, boolean create_file, String... properties) {
