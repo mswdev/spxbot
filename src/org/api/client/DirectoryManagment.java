@@ -1,4 +1,4 @@
-package org.api;
+package org.api.client;
 
 import org.data.enums.DirectoryFile;
 import org.data.enums.DirectoryFolder;

@@ -1,28 +1,20 @@
 package org.ui;
 
-import org.api.design.enums.SPXColor;
-import org.api.design.enums.SPXFont;
+import org.api.client.design.enums.SPXColor;
+import org.api.client.design.enums.SPXFont;
 import org.data.Vars;
-import org.ui.AppletFrame;
 import org.util.Images;
 import org.util.Logging;
 import org.util.Text;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 /**
  * Created by Sphiinx on 6/9/2017.
  */
-public class SplashScreen extends AppletFrame {
-
-    /**
-     * The master JPanel for the splash screen panel.
-     */
-    private static final JPanel SPLASH_SCREEN_PANEL = new JPanel();
+public class SplashScreen extends JPanel {
 
     /**
      * The master JLabel for the status text.
@@ -48,8 +40,8 @@ public class SplashScreen extends AppletFrame {
      * Initializes the main splash screen panel.
      */
     public void initializeSplashScreen() {
-        SPLASH_SCREEN_PANEL.setLayout(new BorderLayout());
-        SPLASH_SCREEN_PANEL.setBackground(SPXColor.SPX_GRAY.getColor());
+        setLayout(new BorderLayout());
+        setBackground(SPXColor.SPX_GRAY.getColor());
 
         IMAGE_ICON.setImage(Images.getImage(Vars.get().LOGO_URL));
         LOGO_LABEL.setIcon(IMAGE_ICON);
@@ -67,19 +59,9 @@ public class SplashScreen extends AppletFrame {
         DEVELOPERS_TEXT.setHorizontalAlignment(JLabel.LEFT);
         DEVELOPERS_TEXT.setBorder(new EmptyBorder(0, 10, 10 ,0));
 
-        SPLASH_SCREEN_PANEL.add(LOGO_LABEL, BorderLayout.NORTH);
-        SPLASH_SCREEN_PANEL.add(STATUS_TEXT, BorderLayout.CENTER);
-        SPLASH_SCREEN_PANEL.add(DEVELOPERS_TEXT, BorderLayout.SOUTH);
-        getAppletFrame().add(SPLASH_SCREEN_PANEL);
-    }
-
-    /**
-     * Gets the main splash screen panel.
-     *
-     * @return The main splash screen panel.
-     */
-    public JPanel getSplashScreenPanel() {
-        return SPLASH_SCREEN_PANEL;
+        add(LOGO_LABEL, BorderLayout.NORTH);
+        add(STATUS_TEXT, BorderLayout.CENTER);
+        add(DEVELOPERS_TEXT, BorderLayout.SOUTH);
     }
 
     /**

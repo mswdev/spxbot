@@ -1,4 +1,4 @@
-package org.api.design.enums;
+package org.api.client.design.enums;
 
 import java.awt.*;
 

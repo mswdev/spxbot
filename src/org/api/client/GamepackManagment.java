@@ -1,4 +1,4 @@
-package org.api;
+package org.api.client;
 
 import org.ConfigReader;
 import org.data.Vars;

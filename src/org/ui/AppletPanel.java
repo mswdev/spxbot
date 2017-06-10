@@ -1,6 +1,6 @@
 package org.ui;
 
-import org.api.design.enums.SPXColor;
+import org.api.client.design.enums.SPXColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,31 +8,15 @@ import java.awt.*;
 /**
  * Created by Sphiinx on 6/9/2017.
  */
-public class AppletPanel extends AppletFrame {
-
-    /**
-     * The master JPanel for the applet panel.
-     */
-    private static final JPanel APPLET_PANEL = new JPanel();
+public class AppletPanel extends JPanel {
 
     /**
      * Initializes the main applet panel.
      */
     public void initializeAppletPanel() {
-        APPLET_PANEL.setLayout(new BorderLayout());
-        APPLET_PANEL.setBackground(SPXColor.SPX_GRAY.getColor());
-        getAppletFrame().add(APPLET_PANEL);
+        setLayout(new BorderLayout());
+        setBackground(SPXColor.SPX_GRAY.getColor());
     }
-
-    /**
-     * Gets the main applet panel.
-     *
-     * @return The main applet panel.
-     */
-    public JPanel getAppletPanel() {
-        return APPLET_PANEL;
-    }
-
 
 }
 
