@@ -37,12 +37,17 @@ public class Vars {
     /**
      * The applet frame width in pixels.
      */
-    public final int APPLET_FRAME_WIDTH = 800;
+    public final int APPLET_FRAME_WIDTH = 791;
 
     /**
      * The applet frame height in pixels.
      */
-    public final int APPLET_FRAME_HEIGHT = 600;
+    public final int APPLET_FRAME_HEIGHT = 552;
+
+    /**
+     * The last known revision, this is just a base for starting the revision tracking.
+     * */
+    public final int LAST_KNOWN_REVISION = 143;
 
     /**
      * The name of the applet.
@@ -55,9 +60,9 @@ public class Vars {
     public final String JAVA_CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
 
     /**
-     * The last known revision, this is just a base for starting the revision tracking.
+     * The url for the SPXBot logo.
      * */
-    public final int LAST_KNOWN_REVISION = 143;
+    public final String LOGO_URL = "http://i.imgur.com/YJHv3r1.png";
 
 }
 

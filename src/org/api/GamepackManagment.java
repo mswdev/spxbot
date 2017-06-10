@@ -24,7 +24,7 @@ public class GamepackManagment {
      * Parses the config parameters from the RuneScape config URL.
      *
      * @return A Map containing the RuneScape config parameters.
-     * */
+     */
     public static Map<String, String> getConfigParameters() {
         final ConfigReader CONFIG_READER = new ConfigReader(Vars.get().JAVA_CONFIG_URL);
         return CONFIG_READER.parseConfig();
@@ -85,21 +85,13 @@ public class GamepackManagment {
 
     /**
      * Requests the RuneScape gamepack from the config url.
-     * If it fails to request the RuneScape gamepack, it will throw an error message showing the failed url and creation path.
-     *
-     * @return True if the RuneScape gamepack was successfully acquired; false otherwise.
      */
-    public static boolean requestGamepack() {
+    public static void requestGamepack() {
+        Logging.setDebugStatus("Acquiring the gamepack");
         final String GAMEPACK_PATH = DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName();
 
-        if (Request.requestFile(getConfigParameters().get("codebase") + getConfigParameters().get("initial_jar"), GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension(), true)) {
+        if (Request.requestFile(getConfigParameters().get("codebase") + getConfigParameters().get("initial_jar"), GAMEPACK_PATH, DirectoryFile.GAMEPACK.getFileName(), DirectoryFile.GAMEPACK.getFileExtension(), true))
             putRevision();
-            return true;
-        } else {
-            Logging.error("Unable to download the RuneScape gamepack.jar from the URL: " + getConfigParameters().get("codebase") + getConfigParameters().get("initial_jar"));
-            Logging.error("Failed creation path: " + System.getProperty("user.home") + GAMEPACK_PATH);
-            return false;
-        }
     }
 
     /**
@@ -108,7 +100,7 @@ public class GamepackManagment {
      * @return True if we need a new RuneScape gamepack; false otherwise.
      */
     public static boolean needsGamepack() {
-
+        Logging.setDebugStatus("Verifying the gamepack");
         final int GAMEPACK_SIZE = Request.requestFileSize(getConfigParameters().get("codebase") + getConfigParameters().get("initial_jar"));
 
         final String GAMEPACK_PATH = DirectoryFolder.DATA.getDirectoryPath() + File.separator + DirectoryFolder.DATA.getFolderName();
@@ -127,7 +119,7 @@ public class GamepackManagment {
 
     /**
      * Puts the current local revision in the client build data file.
-     * */
+     */
     public static void putRevision() {
         final String PROPERTY_NAME = "local_revision";
         final String REVISION = Integer.toString(getNewestRevision(Vars.get().LAST_KNOWN_REVISION));

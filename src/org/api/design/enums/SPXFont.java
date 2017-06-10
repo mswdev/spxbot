@@ -7,7 +7,7 @@ import java.awt.*;
  */
 public enum SPXFont {
 
-    SPX_MAIN_TEXT(new Font("Verdana", Font.PLAIN, 14));
+    SPX_MAIN_TEXT(new Font("Verdana", Font.PLAIN, 12));
 
     private final Font FONT;
 
