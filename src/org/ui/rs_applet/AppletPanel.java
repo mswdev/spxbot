@@ -1,4 +1,4 @@
-package org.ui;
+package org.ui.rs_applet;
 
 import org.api.client.design.enums.SPXColor;
 
@@ -11,7 +11,7 @@ import java.awt.*;
 public class AppletPanel extends JPanel {
 
     /**
-     * Initializes the main applet panel.
+     * Initializes the applet panel.
      */
     public void initializeAppletPanel() {
         setLayout(new BorderLayout());

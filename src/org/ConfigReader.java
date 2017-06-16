@@ -18,14 +18,14 @@ public class ConfigReader {
 
     /**
      * The url defined as a String in which to fetch the config file.
-     * */
+     */
     private String url = null;
 
     /**
      * The constructor containing the url in which to fetch the config file.
      *
      * @param url The url in which to fetch the config file.
-     * */
+     */
     public ConfigReader(String url) {
         this.url = url;
     }
@@ -34,7 +34,7 @@ public class ConfigReader {
      * Parses the data from the fetched config file.
      *
      * @return The fetched data that was parsed.
-     * */
+     */
     public Map<String, String> parseConfig() {
         final String[] config_page = fetchConfig();
         if (config_page == null)
@@ -57,7 +57,7 @@ public class ConfigReader {
      * Fetches a String Array containing the config file from Oldschool Runescapes website.
      *
      * @return A String Array containing the config file from Oldschool Runescapes website.
-     * */
+     */
     private String[] fetchConfig() {
         try {
             List<String> config_lines = new ArrayList<>();

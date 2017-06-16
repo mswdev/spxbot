@@ -7,9 +7,10 @@ import java.io.File;
  */
 public enum DirectoryFolder {
 
-    SPXBot("SPXBot", System.getProperty("user.home"), null),
-    DATA("data", SPXBot.getDirectoryPath() + File.separator + SPXBot.getFolderName(), DirectoryFile.GAMEPACK),
-    SETTINGS("settings", SPXBot.getDirectoryPath() + File.separator + SPXBot.getFolderName(), DirectoryFile.CLIENT_BUILD);
+    SPXBot("SPXBot", System.getProperty("user.home")),
+    DATA("data", SPXBot.getDirectoryPath() + File.separator + SPXBot.getFolderName(), DirectoryFile.GAMEPACK, DirectoryFile.CLIENT_BUILD),
+    SETTINGS("settings", SPXBot.getDirectoryPath() + File.separator + SPXBot.getFolderName()),
+    ASSETS("assets", SPXBot.getDirectoryPath() + File.separator + SPXBot.getFolderName(), DirectoryFile.CLIENT_INITIALIZATION_LOGO, DirectoryFile.SPLASH_SCREEN_LOGO);
 
     private final String FOLDER_NAME;
     private final String PATH;

@@ -1,4 +1,4 @@
-package org.ui;
+package org.ui.rs_applet;
 
 import org.data.Vars;
 
@@ -10,13 +10,15 @@ import javax.swing.*;
 public class AppletFrame extends JFrame {
 
     /**
-     * Initializes the main applet frame.
+     * Initializes the applet frame.
      */
     public void initializeAppletFrame() {
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle(Vars.get().APPLET_NAME);
         setSize(Vars.get().APPLET_FRAME_WIDTH, Vars.get().APPLET_FRAME_HEIGHT);
         setLocationRelativeTo(null);
     }
+
 
 }
 

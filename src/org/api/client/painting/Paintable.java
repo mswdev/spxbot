@@ -1,31 +1,13 @@
 package org.api.client.painting;
 
-import org.api.General;
+import java.awt.*;
 
 /**
  * Created by Sphiinx on 6/10/2017.
  */
-public class Paintable implements Runnable, Painting {
+public interface Paintable {
 
-    /**
-     * The master Painting instance.
-     * */
-    private final Painting PAINTING;
-
-    public Paintable(Painting painting) {
-        this.PAINTING = painting;
-    }
-
-    @Override
-    public void run() {
-        General.sleep(50);
-        this.PAINTING.onPaint();
-    }
-
-    @Override
-    public void onPaint() {
-
-    }
+    void onPaint(Graphics graphics);
 
 }
 

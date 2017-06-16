@@ -18,12 +18,12 @@ public class RSAppletContext implements AppletContext {
 
     /**
      * The hash map containing the streams.
-     * */
+     */
     private final Map<String, InputStream> STREAMS = new HashMap<>();
 
     /**
      * The applet.
-     * */
+     */
     private Applet applet;
 
     /**

@@ -13,24 +13,24 @@ public class RSAppletStub implements AppletStub {
 
     /**
      * The hash map containing the config parameters.
-     * */
+     */
     private final Map<String, String> CONFIG_PARAMETERS;
 
     /**
      * The applet context.
-     * */
+     */
     private final RSAppletContext APPLET_CONTEXT;
 
     /**
      * Contains whether the applet should be active or not.
-     * */
+     */
     private boolean is_active = false;
 
     /**
      * The constructor initializing the config parameters and creating the new applet context.
      *
      * @param config_parameters The config parameters to pass to the constructor.
-     * */
+     */
     public RSAppletStub(Map<String, String> config_parameters) {
         this.CONFIG_PARAMETERS = config_parameters;
         APPLET_CONTEXT = new RSAppletContext();
@@ -40,7 +40,7 @@ public class RSAppletStub implements AppletStub {
      * Sets the applet to active in order to start it.
      *
      * @param is_active True if the applet should be active; false otherwise.
-     * */
+     */
     public void setActive(boolean is_active) {
         this.is_active = is_active;
     }

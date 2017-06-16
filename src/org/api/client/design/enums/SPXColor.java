@@ -9,7 +9,8 @@ public enum SPXColor {
 
     SPX_RED(new Color(137, 46, 46)),
     SPX_GRAY(new Color(26, 24, 24)),
-    SPX_WHITE(new Color(251, 249, 250));
+    SPX_WHITE(new Color(251, 249, 250)),
+    SPX_TRANSPARENT(new Color(0, 0, 0, 0));
 
     private final Color COLOR;
 

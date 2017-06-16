@@ -46,7 +46,7 @@ public class Vars {
 
     /**
      * The last known revision, this is just a base for starting the revision tracking.
-     * */
+     */
     public final int LAST_KNOWN_REVISION = 143;
 
     /**
@@ -60,9 +60,15 @@ public class Vars {
     public final String JAVA_CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
 
     /**
-     * The url for the SPXBot logo.
-     * */
-    public final String LOGO_URL = "http://i.imgur.com/YJHv3r1.png";
+     * The current client version.
+     */
+    public final String CLIENT_VERSION = "0.0.3";
+
+
+    /**
+     * The name of the client developer.
+     */
+    public final String CLIENT_DEVELOPER = "Sphiinx";
 
 }
 

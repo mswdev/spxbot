@@ -27,9 +27,8 @@ public class DirectoryManagment {
             final String DIRECTORY_PATH = directory_folder.getDirectoryPath();
 
             final File FILE = FileManagment.getDirectoryInDirectory(DIRECTORY_PATH, directory_folder.getFolderName());
-            if (FILE != null) {
+            if (FILE != null)
                 continue;
-            }
 
             if (!FileManagment.createDirectory(DIRECTORY_PATH, directory_folder.getFolderName())) {
                 Logging.error("Unable to create directory folder: " + directory_folder.getFolderName());
@@ -48,16 +47,14 @@ public class DirectoryManagment {
             if (directory_folder.getDirectoryFiles() == null)
                 continue;
 
-            final DirectoryFile[] DIRECTORY_FILES = DirectoryFile.values();
+            final DirectoryFile[] DIRECTORY_FILES = directory_folder.getDirectoryFiles();
             for (DirectoryFile directory_file : DIRECTORY_FILES) {
-                if (!directory_file.shouldCreateFile()) {
+                if (!directory_file.shouldCreateFile())
                     continue;
-                }
 
                 final File FILE = FileManagment.getFileInDirectory(directory_folder.getDirectoryPath() + File.separator + directory_folder.getFolderName(), directory_file.getFileName(), directory_file.getFileExtension());
-                if (FILE != null) {
+                if (FILE != null)
                     continue;
-                }
 
                 if (!FileManagment.createFile(directory_folder.getDirectoryPath() + File.separator + directory_folder.getFolderName(), directory_file.getFileName(), directory_file.getFileExtension())) {
                     Logging.error("Unable to create directory file: " + directory_file.getFileName());
