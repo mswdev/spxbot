@@ -32,6 +32,7 @@ public class ClientInitializationFrame extends JFrame {
         setTitle(Vars.get().APPLET_NAME + CLIENT_INITIALIZATION_FRAME_TITLE);
         setSize(CLIENT_INITIALIZATION_FRAME_WIDTH, CLIENT_INITIALIZATION_FRAME_HEIGHT);
         setLocationRelativeTo(null);
+        setResizable(false);
     }
 
 }

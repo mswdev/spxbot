@@ -22,11 +22,12 @@ public class AssetManagment {
 
         final DirectoryFolder DIRECTORY_FOLDER = DirectoryFolder.ASSETS;
         for (DirectoryFile directory_file : DIRECTORY_FOLDER.getDirectoryFiles()) {
-            final File FILE = FileManagment.getDirectoryInDirectory(DIRECTORY_PATH, directory_file.getFileName());
+            final File FILE = FileManagment.getDirectoryInDirectory(DIRECTORY_PATH, directory_file.getFileName() + directory_file.getFileExtension());
             if (FILE != null)
                 continue;
 
             Request.requestFile(directory_file.getFileURL(), DIRECTORY_PATH, directory_file.getFileName(), directory_file.getFileExtension(), true);
+            System.out.println("Here");
         }
     }
 

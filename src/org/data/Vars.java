@@ -64,11 +64,14 @@ public class Vars {
      */
     public final String CLIENT_VERSION = "0.0.3";
 
+    /**
+     * The client online status
+     */
+    public String CLIENT_ONLINE_STATUS = "ONLINE";
 
     /**
      * The name of the client developer.
      */
     public final String CLIENT_DEVELOPER = "Sphiinx";
-
 }
 

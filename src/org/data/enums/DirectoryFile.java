@@ -7,8 +7,9 @@ public enum DirectoryFile {
 
     GAMEPACK("gamepack", ".jar", null, false),
     CLIENT_BUILD("client_build", ".dat", null, true, "local_revision"),
-    CLIENT_INITIALIZATION_LOGO("client_initialization_logo", ".png", "https://i.imgur.com/Dy00Y9g.png", false),
-    SPLASH_SCREEN_LOGO("splash_screen_logo", ".png", "http://i.imgur.com/YJHv3r1.png", false);
+    CLIENT_INITIALIZATION_LOGO("client_initialization_logo", ".png", "http://138.68.45.96/client_assets/client_initialization_logo.png", false),
+    LOGIN_SCREEN_LOGO("client_login_screen_logo", ".png", "http://138.68.45.96/client_assets/client_login_screen_logo.png", false),
+    SPLASH_SCREEN_LOGO("client_splash_screen_logo", ".png", "http://138.68.45.96/client_assets/client_splash_screen_logo.png", false);
 
     private final String FILE_NAME;
     private final String FILE_EXTENSION;

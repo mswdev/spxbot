@@ -10,7 +10,7 @@ public enum DirectoryFolder {
     SPXBot("SPXBot", System.getProperty("user.home")),
     DATA("data", SPXBot.getDirectoryPath() + File.separator + SPXBot.getFolderName(), DirectoryFile.GAMEPACK, DirectoryFile.CLIENT_BUILD),
     SETTINGS("settings", SPXBot.getDirectoryPath() + File.separator + SPXBot.getFolderName()),
-    ASSETS("assets", SPXBot.getDirectoryPath() + File.separator + SPXBot.getFolderName(), DirectoryFile.CLIENT_INITIALIZATION_LOGO, DirectoryFile.SPLASH_SCREEN_LOGO);
+    ASSETS("assets", SPXBot.getDirectoryPath() + File.separator + SPXBot.getFolderName(), DirectoryFile.CLIENT_INITIALIZATION_LOGO, DirectoryFile.LOGIN_SCREEN_LOGO, DirectoryFile.SPLASH_SCREEN_LOGO);
 
     private final String FOLDER_NAME;
     private final String PATH;

@@ -12,12 +12,12 @@ public class LoginScreenFrame extends JFrame {
     /**
      * The width for the login screen frame.
      */
-    private final int LOGIN_SCREEN_FRAME_WIDTH = 350;
+    private final int LOGIN_SCREEN_FRAME_WIDTH = 250;
 
     /**
      * The height for the login screen frame.
      */
-    private final int LOGIN_SCREEN_FRAME_HEIGHT = 370;
+    private final int LOGIN_SCREEN_FRAME_HEIGHT = 295;
 
     /**
      * The String containing the login screen frame title.
@@ -32,6 +32,7 @@ public class LoginScreenFrame extends JFrame {
         setTitle(Vars.get().APPLET_NAME + LOGIN_SCREEN_FRAME_TITLE);
         setSize(LOGIN_SCREEN_FRAME_WIDTH, LOGIN_SCREEN_FRAME_HEIGHT);
         setLocationRelativeTo(null);
+        setResizable(false);
     }
 
 }

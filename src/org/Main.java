@@ -2,6 +2,7 @@ package org;
 
 import org.thread.ScheduledThread;
 import org.ui.client_initialization.ClientInitialization;
+import org.ui.login_screen.LoginScreen;
 import org.ui.rs_applet.RSFrame;
 import org.util.Logging;
 
@@ -17,6 +18,8 @@ public class Main {
 
     private static final ClientInitialization CLIENT_INITIALIZATION = new ClientInitialization();
 
+    private static final LoginScreen LOGIN_SCREEN = new LoginScreen();
+
     private static final RSFrame RS_FRAME = new RSFrame();
 
     public static void main(String[] args) {
@@ -24,6 +27,7 @@ public class Main {
         THREAD_POOL_EXECUTOR.scheduleAtFixedRate(new ScheduledThread(), 0, 100, TimeUnit.MILLISECONDS);
 
         CLIENT_INITIALIZATION.run();
+        LOGIN_SCREEN.run();
         RS_FRAME.run();
     }
 
