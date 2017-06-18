@@ -14,7 +14,7 @@ public class ScheduledThread implements Runnable {
 
     @Override
     public void run() {
-        if (!Logging.getDebugStatus().contains("%"))
+        if (!Logging.getDebugStatus().contains("%") && !Logging.isDebugStatusEmpty())
             STATUS_TEXT = Logging.getDebugStatus() + Text.getLoadingPeriods();
         else
             STATUS_TEXT = Logging.getDebugStatus();

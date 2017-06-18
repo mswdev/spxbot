@@ -2,6 +2,7 @@ package org.ui.client_initialization;
 
 import org.api.client.AssetManagment;
 import org.api.client.DirectoryManagment;
+import org.SPXBotDatabase;
 
 /**
  * Created by Sphiinx on 6/16/2017.
@@ -27,10 +28,15 @@ public class ClientInitialization {
         CLIENT_INITIALIZATION_FRAME.add(CLIENT_INITIALIZATION_PANEL);
         CLIENT_INITIALIZATION_FRAME.setVisible(true);
 
-        AssetManagment.requestAssets();
+        SPXBotDatabase.establishConnection();
+        SPXBotDatabase.setClientOnlineStatus();
+        SPXBotDatabase.setClientVersion();
+
         DirectoryManagment.createDirectoryFolders();
         DirectoryManagment.createDirectoryFiles();
         DirectoryManagment.createFileProperties();
+
+        AssetManagment.requestAssets();
 
         CLIENT_INITIALIZATION_FRAME.setVisible(false);
     }

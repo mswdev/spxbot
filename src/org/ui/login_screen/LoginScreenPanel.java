@@ -1,17 +1,21 @@
 package org.ui.login_screen;
 
+import org.SPXBotDatabase;
 import org.api.client.design.enums.SPXColor;
 import org.api.client.design.enums.SPXFont;
 import org.data.Vars;
 import org.data.enums.DirectoryFile;
 import org.data.enums.DirectoryFolder;
 import org.util.Images;
+import org.util.security.SecurityAuthentication;
 import org.web.Request;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 /**
  * Created by Sphiinx on 6/14/2017.
@@ -102,7 +106,7 @@ public class LoginScreenPanel extends JPanel implements KeyListener {
         USERNAME_FIELD.setBackground(SPXColor.SPX_WHITE.getColor());
         USERNAME_FIELD.setForeground(SPXColor.SPX_PROMPT.getColor());
         USERNAME_FIELD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(SPXColor.SPX_RED.getColor(), 2), BorderFactory.createEmptyBorder(4, 4, 4, 4)));
-        USERNAME_FIELD.addFocusListener(setUsernamePrompt());
+        USERNAME_FIELD.addFocusListener(setUsernameFocusListener());
         USERNAME_FIELD.addKeyListener(this);
         add(USERNAME_FIELD, CONSTRAINTS);
 
@@ -115,7 +119,7 @@ public class LoginScreenPanel extends JPanel implements KeyListener {
         PASSWORD_FIELD.setBackground(SPXColor.SPX_WHITE.getColor());
         PASSWORD_FIELD.setForeground(SPXColor.SPX_PROMPT.getColor());
         PASSWORD_FIELD.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(SPXColor.SPX_RED.getColor(), 2), BorderFactory.createEmptyBorder(4, 4, 4, 4)));
-        PASSWORD_FIELD.addFocusListener(setPasswordPrompt());
+        PASSWORD_FIELD.addFocusListener(setPasswordFocusListener());
         PASSWORD_FIELD.addKeyListener(this);
         add(PASSWORD_FIELD, CONSTRAINTS);
 
@@ -127,7 +131,7 @@ public class LoginScreenPanel extends JPanel implements KeyListener {
         FORGOT_PASSWORD_LINK.setText("Forgot password?");
         FORGOT_PASSWORD_LINK.setFont(SPXFont.SPX_MAIN_TEXT.getFont());
         FORGOT_PASSWORD_LINK.setForeground(SPXColor.SPX_WHITE.getColor());
-        FORGOT_PASSWORD_LINK.addMouseListener(setForgotPasswordActions());
+        FORGOT_PASSWORD_LINK.addMouseListener(setForgotPasswordMouseListener());
         add(FORGOT_PASSWORD_LINK, CONSTRAINTS);
 
         CONSTRAINTS.gridx = 1;
@@ -139,7 +143,8 @@ public class LoginScreenPanel extends JPanel implements KeyListener {
         LOGIN_BUTTON.setForeground(SPXColor.SPX_WHITE.getColor());
         LOGIN_BUTTON.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(SPXColor.SPX_WHITE.getColor(), 2), BorderFactory.createEmptyBorder(4, 4, 4, 4)));
         LOGIN_BUTTON.setFocusPainted(false);
-        LOGIN_BUTTON.addActionListener(setLoginButtonActions());
+        LOGIN_BUTTON.addActionListener(setLoginButtonActionListener());
+        LOGIN_BUTTON.addMouseListener(setLoginButtonMouseListener());
         LOGIN_BUTTON.addKeyListener(this);
         add(LOGIN_BUTTON, CONSTRAINTS);
 
@@ -153,10 +158,14 @@ public class LoginScreenPanel extends JPanel implements KeyListener {
 
         CONSTRAINTS.gridx = 0;
         CONSTRAINTS.gridy = 5;
-        CONSTRAINTS.insets = new Insets(0, 0, 0, 94);
-        STATUS_TEXT.setText("[STATUS]: " + Vars.get().CLIENT_ONLINE_STATUS);
+        CONSTRAINTS.insets = new Insets(0, 0, 0, 93);
+        STATUS_TEXT.setText("[STATUS]: ONLINE");
         STATUS_TEXT.setFont(SPXFont.SPX_MAIN_TEXT.getFont());
         STATUS_TEXT.setForeground(SPXColor.SPX_WHITE.getColor());
+        if (!Vars.get().IS_CLIENT_ONLINE) {
+            STATUS_TEXT.setText("[STATUS]: OFFLINE");
+            STATUS_TEXT.setForeground(SPXColor.SPX_RED.getColor());
+        }
         add(STATUS_TEXT, CONSTRAINTS);
 
         CONSTRAINTS.gridwidth = 2;
@@ -178,8 +187,10 @@ public class LoginScreenPanel extends JPanel implements KeyListener {
 
     /**
      * Sets the username field prompt text.
+     *
+     * @return The FocusListener for the username prompt.
      */
-    private FocusListener setUsernamePrompt() {
+    private FocusListener setUsernameFocusListener() {
         return new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -201,8 +212,10 @@ public class LoginScreenPanel extends JPanel implements KeyListener {
 
     /**
      * Sets the password field prompt text.
+     *
+     * @return The FocusListener for the password prompt.
      */
-    private FocusListener setPasswordPrompt() {
+    private FocusListener setPasswordFocusListener() {
         return new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -231,8 +244,10 @@ public class LoginScreenPanel extends JPanel implements KeyListener {
 
     /**
      * Sets the forgot password link actions.
+     *
+     * @return The MouseListener for the forgot password actions.
      */
-    private MouseListener setForgotPasswordActions() {
+    private MouseListener setForgotPasswordMouseListener() {
         return new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -254,22 +269,51 @@ public class LoginScreenPanel extends JPanel implements KeyListener {
 
     /**
      * Sets the login button actions.
+     *
+     * @return The ActionListener for the button actions.
      */
-    private ActionListener setLoginButtonActions() {
-        String username = "Sphiinx";
-        String password = "Pleb123";
+    private ActionListener setLoginButtonActionListener() {
         return e -> {
-            String password_combined = "";
-            for (char character : PASSWORD_FIELD.getPassword())
-                password_combined += character;
+            try {
+                if (!Vars.get().IS_CLIENT_ONLINE)
+                    return;
 
-            if (USERNAME_FIELD.getText().equalsIgnoreCase(username) && password_combined.equals(password))
-                has_logged_in = true;
-            else
-                INCORRECT_LOGIN_INFORMATION.setVisible(true);
+                if (SecurityAuthentication.authenticateToken(PASSWORD_FIELD.getPassword(), SPXBotDatabase.getUserAccountToken(USERNAME_FIELD.getText()))) {
+                    SPXBotDatabase.incrementUserAccountValue(USERNAME_FIELD.getText(), "successful_logins");
+                    SPXBotDatabase.updateUserAccountDate(USERNAME_FIELD.getText(), "last_successful_login");
+                    SPXBotDatabase.updateUserAccountValue(USERNAME_FIELD.getText(), "last_successful_ip", Request.requestIP());
+                    has_logged_in = true;
+                } else {
+                    SPXBotDatabase.incrementUserAccountValue(USERNAME_FIELD.getText(), "failed_logins");
+                    SPXBotDatabase.updateUserAccountDate(USERNAME_FIELD.getText(), "last_failed_login");
+                    SPXBotDatabase.updateUserAccountValue(USERNAME_FIELD.getText(), "last_failed_ip", Request.requestIP());
+                    INCORRECT_LOGIN_INFORMATION.setVisible(true);
+                }
+            } catch (InvalidKeySpecException | NoSuchAlgorithmException e1) {
+                e1.printStackTrace();
+            }
         };
     }
 
+    /**
+     * Sets the login button actions.
+     *
+     * @return The MouseListener for the button actions.
+     */
+    private MouseListener setLoginButtonMouseListener() {
+        return new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                LOGIN_BUTTON.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+        };
+    }
+
+    /**
+     * Determines if the user has successfully logged in.
+     *
+     * @return True if the user has successfully logged in; false otherwise.
+     * */
     public boolean hasLoggedIn() {
         return has_logged_in;
     }

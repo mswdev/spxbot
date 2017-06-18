@@ -2,9 +2,9 @@ package org.api.client;
 
 import org.data.enums.DirectoryFile;
 import org.data.enums.DirectoryFolder;
-import org.directory_managment.FileManagment;
-import org.directory_managment.PropertyManagment;
 import org.util.Logging;
+import org.util.directory_managment.FileManagment;
+import org.util.directory_managment.PropertyManagment;
 
 import java.io.File;
 import java.io.FileOutputStream;

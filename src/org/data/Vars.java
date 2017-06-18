@@ -62,12 +62,12 @@ public class Vars {
     /**
      * The current client version.
      */
-    public final String CLIENT_VERSION = "0.0.3";
+    public String CLIENT_VERSION = "";
 
     /**
-     * The client online status
+     * The boolean determining whether the client is online or not.
      */
-    public String CLIENT_ONLINE_STATUS = "ONLINE";
+    public boolean IS_CLIENT_ONLINE;
 
     /**
      * The name of the client developer.

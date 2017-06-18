@@ -4,9 +4,9 @@ import org.ConfigReader;
 import org.data.Vars;
 import org.data.enums.DirectoryFile;
 import org.data.enums.DirectoryFolder;
-import org.directory_managment.FileManagment;
-import org.directory_managment.PropertyManagment;
 import org.util.Logging;
+import org.util.directory_managment.FileManagment;
+import org.util.directory_managment.PropertyManagment;
 import org.web.Request;
 
 import java.io.DataOutputStream;

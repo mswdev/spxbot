@@ -2,8 +2,8 @@ package org.api.client;
 
 import org.data.enums.DirectoryFile;
 import org.data.enums.DirectoryFolder;
-import org.directory_managment.FileManagment;
 import org.util.Logging;
+import org.util.directory_managment.FileManagment;
 import org.web.Request;
 
 import java.io.File;
@@ -27,7 +27,6 @@ public class AssetManagment {
                 continue;
 
             Request.requestFile(directory_file.getFileURL(), DIRECTORY_PATH, directory_file.getFileName(), directory_file.getFileExtension(), true);
-            System.out.println("Here");
         }
     }
 

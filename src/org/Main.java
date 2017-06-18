@@ -5,7 +5,10 @@ import org.ui.client_initialization.ClientInitialization;
 import org.ui.login_screen.LoginScreen;
 import org.ui.rs_applet.RSFrame;
 import org.util.Logging;
+import org.util.security.SecurityAuthentication;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
