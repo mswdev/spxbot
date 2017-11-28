@@ -1,0 +1,3 @@
+[submodule "general-api"]
+	path = general-api
+	url = https://github.com/Sphiinx/general-api
