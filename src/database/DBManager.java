@@ -12,11 +12,11 @@ import java.sql.SQLException;
  */
 public class DBManager extends SQLDatabaseConnector {
 
-    private static final String DATABASE_URL = "jdbc:mysql://138.68.45.96:3306/spxbot";
+    private static final String DATABASE_URL = "jdbc:mysql://192.168.0.1/spxbot";
 
     private static final String DATABASE_USERNAME = "spxbot";
 
-    private static final String DATABASE_PASSWORD = "-3VP3&Awv#3nJ-YCezH@h2t%wNuhEa#!kRE49@DzCc?J^67L";
+    private static final String DATABASE_PASSWORD = "";
 
     /**
      * Establishes a connection with the SPXBot database.
